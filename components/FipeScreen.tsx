@@ -28,7 +28,7 @@ export default function FipeScreen({ data }: IFipeScreen) {
     }, [searchTerm])
 
 
-    const renderItem = ({ item }) => {
+    const renderItem = ({ item }: { item: FipeItem }) => {
         return (
             <TouchableOpacity style={styles.item}>
                 <Text style={styles.item_text}>{item.nome}</Text>

@@ -3,17 +3,20 @@ import { styles } from "@/styles";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { FlashList } from "@shopify/flash-list";
 import { useEffect, useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { RefreshControl, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 
 interface IFipeScreen {
     data?: FipeItem[]
+    isLoading: boolean
+    update: () => void
+    goNext: (codigo: string) => void
 }
 
-export default function FipeScreen({ data }: IFipeScreen) {
-
+export default function FipeScreen({ data, isLoading, update, goNext }: IFipeScreen) {
+    console.log(data);
     const [searchTerm, setSearchTerm] = useState('');
-    const [filterData, setFilterData] = useState(data);
+    const [filterData, setFilterData] = useState<FipeItem[]>([]);
 
 
     useEffect(() => {
@@ -25,15 +28,15 @@ export default function FipeScreen({ data }: IFipeScreen) {
 
         setFilterData(result)
 
-    }, [searchTerm])
+    }, [searchTerm, data])
 
 
     const renderItem = ({ item }: { item: FipeItem }) => {
         return (
-            <TouchableOpacity style={styles.item}>
+            <TouchableOpacity style={styles.item} onPress={() => goNext(item.codigo)}>
                 <Text style={styles.item_text}>{item.nome}</Text>
                 <Ionicons name="chevron-forward" size={18} color="gray" />
-            </TouchableOpacity>
+            </TouchableOpacity >
         )
     }
 
@@ -52,6 +55,7 @@ export default function FipeScreen({ data }: IFipeScreen) {
                 style={styles.list}
                 data={filterData}
                 renderItem={renderItem}
+                refreshControl={<RefreshControl refreshing={isLoading} onRefresh={update} ></RefreshControl>}
             />
         </View>
     );

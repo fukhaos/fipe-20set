@@ -4,3 +4,4 @@ export interface FipeItem {
 }
 
 export interface Marca extends FipeItem { };
+export interface Modelos extends FipeItem { };

@@ -1,9 +1,11 @@
 import { styles } from "@/styles";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { FlashList } from "@shopify/flash-list";
+import { useEffect, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
+
   const data = [{
     title: "Um"
   }, {
@@ -13,6 +15,20 @@ export default function Index() {
   }, {
     title: "Quatro"
   }]
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterData, setFilterData] = useState(data);
+
+
+  useEffect(() => {
+    const result = data.filter((item) => {
+      return item.title.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase());
+    });
+
+    setFilterData(result)
+
+  }, [searchTerm])
+
 
   const renderItem = ({ item }) => {
     return (
@@ -27,6 +43,8 @@ export default function Index() {
   return (
     <View style={styles.container}>
       <TextInput
+        value={searchTerm}
+        onChangeText={setSearchTerm}
         style={styles.input}
         placeholder="Buscar ..."
         placeholderTextColor="#666"
@@ -34,11 +52,9 @@ export default function Index() {
 
       <FlashList
         style={styles.list}
-        data={data}
+        data={filterData}
         renderItem={renderItem}
       />
-
-
     </View>
   );
 }

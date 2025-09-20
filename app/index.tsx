@@ -7,8 +7,8 @@ import useSWR from 'swr';
 
 export default function Index() {
 
-  const goNext = (codigo: string) => {
-    router.push({ pathname: '/modelos', params: { codigoModelo: codigo } })
+  const goNext = (codigoMarca: string) => {
+    router.push({ pathname: '/modelos', params: { codigoMarca } })
   }
 
   const { data, error, isLoading, mutate } = useSWR<Marca[]>('/carros/marcas', fetcher)

@@ -11,7 +11,9 @@ export default function Index() {
     router.push({ pathname: '/modelos', params: { codigoMarca } })
   }
 
-  const { data, error, isLoading, mutate } = useSWR<Marca[]>('/carros/marcas', fetcher)
+  const { data, error, isLoading, mutate } = useSWR<Marca[]>('/carros/marcas', fetcher, {
+    dedupingInterval: 24 * 60 * 60 * 1000
+  })
 
   if (error) {
     return <Text>Error na request, tente novamente</Text>
